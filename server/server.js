@@ -26,11 +26,13 @@ io.on('connection', (socket) => {
       if (errorMessage) {
         console.log(errorMessage);
       }else{
-        client.get(`search/tweets.json?q=${encodeURIComponent(info.query)}&geocode=${results.lat},${results.long},5km&lang=en&result_type=recent`, function(error, tweets, response){
-          if(error) throw error;
-          io.emit('display', displayTweets(tweets));
-        });
-        console.log('displaying tweets');
+        setInterval(function(){
+          client.get(`search/tweets.json?q=${encodeURIComponent(info.query)}&geocode=${results.lat},${results.long},5km&lang=en&result_type=recent`, function(error, tweets, response){
+            if(error) throw error;
+            io.emit('display', displayTweets(tweets));
+          });
+          console.log('displaying tweets');
+        }, 10000);
       }
     });
   });
