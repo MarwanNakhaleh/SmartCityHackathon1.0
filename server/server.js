@@ -22,12 +22,12 @@ var client = new Twitter({
 
 io.on('connection', (socket) => {
   socket.on('getTweets', (info, callback) => {
-    setTimeout(function(){
+    setInterval(function(){
       client.get(`search/tweets.json?q=${encodeURIComponent(info.query)}&geocode=39.9612,-82.9988,5km&lang=en&result_type=recent`, function(error, tweets, response){
         if(error) throw error;
         io.emit('display', displayTweets(tweets));
-        console.log('displaying tweets');
       });
+      console.log('displaying tweets');
     }, 5000);
   });
 });
