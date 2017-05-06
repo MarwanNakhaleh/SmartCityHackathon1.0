@@ -12,13 +12,13 @@
     <button>Send</button>
   </form>
 
-  <ul id="tweets">
-  </ul>
+  <div id="tweets">
+  </div>
 
   <script id="tweet-template" type="text/template">
-    <li>
-      <b>{{ created_at }}</b> {{ text }}
-    </li>
+    <p>
+      <b>{{ created_at }}</b><br>{{ text }}
+    </p>
   </script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>

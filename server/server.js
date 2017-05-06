@@ -28,7 +28,9 @@ io.on('connection', (socket) => {
       }else{
         setInterval(function(){
           client.get(`search/tweets.json?q=${encodeURIComponent(info.query)}&geocode=${results.lat},${results.long},1km&lang=en&result_type=recent`, function(error, tweets, response){
-            if(error) throw error;
+            if(error){
+              throw error;
+            }
             io.emit('display', displayTweets(tweets));
           });
         }, 10000);
