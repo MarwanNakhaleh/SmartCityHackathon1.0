@@ -14,10 +14,10 @@ var io = socketIO(server);
 app.use(express.static(publicPath));
 
 var client = new Twitter({
-  consumer_key: 'jVGAXwYxCliNsQVjaGHiPJDlE',
-  consumer_secret: 'rlqmjZCubJHTo3c4ILrItJGvMjOilGexGHlK03FTitPnzgCo3M',
-  access_token_key: '854507675715080197-2UJHbZZyMm3jEbwiol72tIOgiTx4PRf',
-  access_token_secret: 'DlUSdyTaTZv4yF6xm5UWzyEglQgWExs13qlrzVRAUUwVR'
+  consumer_key: process.env.SCH_CONSUMER_KEY,
+  consumer_secret: process.env.SCH_CONSUMER_SECRET,
+  access_token_key: process.env.SCH_ACCESS_TOKEN,
+  access_token_secret: process.env.SCH_ACCESS_SECRET
 });
 
 io.on('connection', (socket) => {
