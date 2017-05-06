@@ -27,17 +27,16 @@ io.on('connection', (socket) => {
         console.log(errorMessage);
       }else{
         setInterval(function(){
-          client.get(`search/tweets.json?q=${encodeURIComponent(info.query)}&geocode=${results.lat},${results.long},5km&lang=en&result_type=recent`, function(error, tweets, response){
+          client.get(`search/tweets.json?q=${encodeURIComponent(info.query)}&geocode=${results.lat},${results.long},1km&lang=en&result_type=recent`, function(error, tweets, response){
             if(error) throw error;
             io.emit('display', displayTweets(tweets));
           });
-          console.log('displaying tweets');
         }, 10000);
       }
     });
   });
 });
 
-server.listen(3000, () => {
+server.listen(process.env.PORT || 3000, () => {
   console.log(`Server is up on localhost:3000.`);
 });
