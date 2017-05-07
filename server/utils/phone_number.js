@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var PhoneNumber = mongoose.model('PhoneNumber', {
+var numras = new mongoose.Schema({
   number: {
     type: Number,
     required: [true, 'You need a phone number to subscribe.'],
@@ -9,6 +9,8 @@ var PhoneNumber = mongoose.model('PhoneNumber', {
     trim: true
   }
 });
+
+var PhoneNumber = mongoose.model('PhoneNumbers', numras);
 
 module.exports = {
   PhoneNumber

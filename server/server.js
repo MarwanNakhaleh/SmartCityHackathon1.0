@@ -38,6 +38,7 @@ app.post('/sms', (req, res) => {
 
   if (req.body.Body.toLowerCase().includes('emergency')) {
     PhoneNumber.find().then((pns) => {
+      console.log(pns);
       twiml.message(JSON.stringify(pns, undefined, 2));
     });
     twiml.message()
@@ -69,7 +70,7 @@ io.on('connection', (socket) => {
             PhoneNumber.find({ number: info.number }).then((pn) => {
               if(!pn){
                 var phoneNumber = new PhoneNumber({ number: info.number });
-                phoneNumber.save();
+                phoneNumber.save(function (err) {if (err) console.log ('Error on save!')});
               }
             });
             io.emit('display', displayTweets(tweets, twilioClient, info.number, results.lat, results.long));
