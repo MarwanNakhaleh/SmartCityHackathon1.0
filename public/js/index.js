@@ -13,7 +13,7 @@ socket.on('display', function(obj) {
 
   var mymap = L.map('map').setView([obj.lat, obj.long], 11);
 
-  L.tileLayer(`http://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=f98bf15ffcbb84a011e8156372d4d13c`, {
+  L.tileLayer(`http://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=f98bf15ffcbb84a011e8156372d4d13c`, {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(mymap);
 

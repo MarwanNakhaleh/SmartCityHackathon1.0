@@ -3,11 +3,10 @@ var request = require('request');
 var displayTweets = function(tweets, client, number, lat, long){
   var tweetsArr = [];
   for(var i = 0; i < tweets.statuses.length; i++){
-    console.log(tweets.statuses[i]);
     var eachTweet = [];
     eachTweet.push(tweets.statuses[i].created_at);
     eachTweet.push(tweets.statuses[i].text);
-    if(tweets.statuses[i].text.includes("emergency")){
+    if(tweets.statuses[i].text.includes('emergency')){
       var formattedNumber = number.replace(/(\d{3})(\d{3})(\d{4})/, '+1$1$2$3');
       if (formattedNumber.length === 12){
         client.messages.create({

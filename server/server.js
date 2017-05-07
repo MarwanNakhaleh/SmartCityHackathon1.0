@@ -4,9 +4,22 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 const twilio = require('twilio');
+const MessagingResponse = require('twilio').twiml.MessagingResponse;
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
+mongoose.Promise = global.Promise; // use the regular old promise stuff
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/PhoneNumbers', function(err, res){
+  if(err){
+    console.log('unable to connect to db');
+  }else{
+    console.log('successfully connected');
+  }
+});
 
 const publicPath = path.join(__dirname, '../public');
 var {displayTweets, getLocation} = require('./utils/display');
+var {PhoneNumber} = require('./utils/phone_number');
 
 var app = express();
 var server = http.createServer(app);
@@ -14,9 +27,32 @@ var io = socketIO(server);
 var twilioClient = new twilio(process.env.SCH_TWILIO_ACCOUNT_SID, process.env.SCH_TWILIO_AUTH_TOKEN);
 
 app.use(express.static(publicPath));
+app.use(bodyParser());
 
 app.get('/map', function(req, res, next){
   res.sendFile('map.html', { root: publicPath });
+});
+
+app.post('/sms', (req, res) => {
+  const twiml = new MessagingResponse();
+
+  if (req.body.Body.includes('emergency')) {
+    PhoneNumber.find().then((pns) => {
+      for(var i = 0; i < pns.length; i++){
+        console.log(pns[i]);
+      }
+      // client.messages.create({
+      //   body: 'There is an emergency!',
+      //   to: formattedNumber,
+      //   from: '+16143285664'
+      // }).then((message) => console.log(message.sid));
+    });
+  } else {
+    twiml.message('No Body param match, Twilio sends this in the request to your server.');
+  }
+
+  res.writeHead(200, {'Content-Type': 'text/xml'});
+  res.end(twiml.toString());
 });
 
 io.on('connection', (socket) => {
@@ -36,6 +72,11 @@ io.on('connection', (socket) => {
             if(error){
               throw error;
             }
+            PhoneNumber.find({ number: info.number }).then((pn) => {
+              if(!pn){
+                var phoneNumber = new PhoneNumber({ number: info.number });
+              }
+            });
             io.emit('display', displayTweets(tweets, twilioClient, info.number, results.lat, results.long));
           });
         }, 20000);

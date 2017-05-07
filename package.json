@@ -5,13 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server/server.js"
+    "start": "node server/server.js && SET \"NODE_ENV\"=production"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.17.1",
     "bootstrap": "^3.3.7",
     "express": "^4.15.2",
+    "mongoose": "^4.9.7",
     "socket.io": "^1.7.3",
     "twilio": "^3.0.0",
     "twitter": "^1.7.0"
