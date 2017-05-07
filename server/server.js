@@ -55,6 +55,20 @@ app.post('/sms', (req, res) => {
 
 io.on('connection', (socket) => {
   socket.on('getTweets', (info, callback) => {
+    PhoneNumber.find({ number: info.number }).count().then((count) => {
+      if(count == 0){
+        var phoneNumber = new PhoneNumber({ number: info.number });
+        phoneNumber.save(function(err) {
+          if (err){
+            console.log('Error on save!');
+          }else{
+            console.log('saved ok');
+          }
+        });
+      }else{
+        console.log('phone number already logged in db');
+      }
+    });
     locationObj = getLocation(info.location, function(errorMessage, results) {
       if (errorMessage) {
         console.log(errorMessage);
@@ -69,16 +83,6 @@ io.on('connection', (socket) => {
           client.get(`search/tweets.json?q=${encodeURIComponent(info.query)}&geocode=${results.lat},${results.long},5km&lang=en&result_type=recent`, function(error, tweets, response){
             if(error){
               throw error;
-            }
-            if(PhoneNumber.find({ number: info.number }).count() == 0){
-              var phoneNumber = new PhoneNumber({ number: info.number });
-              phoneNumber.save(function(err) {
-                if (err){
-                  console.log('Error on save!');
-                }else{
-                  console.log('saved ok');
-                }
-              });
             }
             io.emit('display', displayTweets(tweets, twilioClient, info.number, results.lat, results.long));
           });
