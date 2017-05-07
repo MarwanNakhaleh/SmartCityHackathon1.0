@@ -10,9 +10,6 @@ socket.on('display', function(obj) {
       text: obj.tweets[i][1]
     });
     jQuery('#tweets').append(html);
-    if(obj.tweets[i].length === 4){
-      L.marker([obj.tweets[i][2], obj.tweets[i][3]]).addTo(mymap).bindPopup(obj.tweets[i][1]);
-    }
   }
 });
 
