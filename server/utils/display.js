@@ -6,12 +6,29 @@ var displayTweets = function(tweets, client, number, lat, long){
     var eachTweet = [];
     eachTweet.push(tweets.statuses[i].created_at);
     eachTweet.push(tweets.statuses[i].text);
+    var formattedNumber = number.replace(/(\d{3})(\d{3})(\d{4})/, '+1$1$2$3');
     if(tweets.statuses[i].text.includes('emergency') || tweets.statuses[i].text.includes('fire') || tweets.statuses[i].text.includes('rescue') || tweets.statuses[i].text.includes('victim') || tweets.statuses[i].text.includes('burning') ||
     tweets.statuses[i].text.includes('flames')){
-      var formattedNumber = number.replace(/(\d{3})(\d{3})(\d{4})/, '+1$1$2$3');
       if (formattedNumber.length === 12){
         client.messages.create({
           body: 'There is an emergency!',
+          to: formattedNumber,
+          from: '+16143285664'
+        }).then((message) => console.log(message.sid));
+      }
+    }
+    else if(tweets.statuses[i].text.includes('614gethelp')){
+      if (formattedNumber.length === 12){
+        client.messages.create({
+          body: 'Someone has tweeted #614GetHelp! Help is needed!',
+          to: formattedNumber,
+          from: '+16143285664'
+        }).then((message) => console.log(message.sid));
+      }
+    }else if(tweets.statuses[i].text.includes('614icanhelp')){
+      if (formattedNumber.length === 12){
+        client.messages.create({
+          body: 'Someone has tweeted #614INeedHelp! People are here to help!',
           to: formattedNumber,
           from: '+16143285664'
         }).then((message) => console.log(message.sid));
