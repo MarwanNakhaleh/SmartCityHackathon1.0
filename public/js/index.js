@@ -37,6 +37,6 @@ jQuery('#get-queries').on('submit', function(e) {
     location: jQuery('[name=location]').val(),
     number: jQuery('[name=number]').val()
   }, function() {
-    // do stuff
+    // do stuf
   });
 });
