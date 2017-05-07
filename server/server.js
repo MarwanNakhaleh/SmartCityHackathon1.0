@@ -41,7 +41,7 @@ app.get('/test_all_numbers', function(req, res, next){
       console.log(`Formatted number: ${formattedNumber}`);
       if (formattedNumber.length === 12){
         twilioClient.messages.create({
-          body: 'There is an emergency!',
+          body: 'One of your peers has notified us that there is an emergency!',
           to: formattedNumber,
           from: '+16143285664'
         }).then((message) => console.log(message.sid));
@@ -53,6 +53,8 @@ app.get('/test_all_numbers', function(req, res, next){
 app.post('/sms', (req, res) => {
   const twiml = new MessagingResponse();
 
+  console.log(req.body);
+
   if (req.body.Body.toLowerCase().includes('emergency')) {
     PhoneNumber.find().then(function(phoneNumbers){
       phoneNumbers.forEach(function(pn) {
@@ -61,7 +63,7 @@ app.post('/sms', (req, res) => {
         console.log(`Formatted number: ${formattedNumber}`);
         if (formattedNumber.length === 12){
           twilioClient.messages.create({
-            body: 'There is an emergency!',
+            body: 'One of your peers has notified us that there is an emergency!',
             to: formattedNumber,
             from: '+16143285664'
           }).then((message) => console.log(message.sid));
