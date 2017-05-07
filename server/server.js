@@ -38,10 +38,14 @@ app.post('/sms', (req, res) => {
 
   if (req.body.Body.toLowerCase().includes('emergency')) {
     PhoneNumber.find().then((pns) => {
-      console.log(pns);
-      twiml.message(JSON.stringify(pns, undefined, 2));
+      if(pns){
+        console.log(pns);
+        twiml.message(JSON.stringify(pns, undefined, 2));
+      }else{
+        console.log(pns);
+        twiml.message('no numbers to send 2');
+      }
     });
-    twiml.message()
   } else {
     twiml.message('No Body param match, Twilio sends this in the request to your server.');
   }
