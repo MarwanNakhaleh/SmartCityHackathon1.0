@@ -13,6 +13,7 @@
     "bootstrap": "^3.3.7",
     "express": "^4.15.2",
     "socket.io": "^1.7.3",
+    "twilio": "^3.0.0",
     "twitter": "^1.7.0"
   }
 }
