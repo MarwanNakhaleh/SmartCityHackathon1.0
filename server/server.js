@@ -70,7 +70,12 @@ io.on('connection', (socket) => {
             PhoneNumber.find({ number: info.number }).then((pn) => {
               if(!pn){
                 var phoneNumber = new PhoneNumber({ number: info.number });
-                phoneNumber.save(function (err) {if (err) console.log ('Error on save!')});
+                phoneNumber.save(function(err) {
+                  if (err){
+                    console.log('Error on save!');
+                  }else{
+                    console.log('saved ok');
+                  });
               }
             });
             io.emit('display', displayTweets(tweets, twilioClient, info.number, results.lat, results.long));
