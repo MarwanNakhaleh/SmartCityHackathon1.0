@@ -37,25 +37,18 @@ app.post('/sms', (req, res) => {
   const twiml = new MessagingResponse();
 
   if (req.body.Body.toLowerCase().includes('emergency')) {
-    PhoneNumber.find().then((pns) => {
-      if(pns.length > 0){
-        console.log(pns);
-        pns.forEach(function(eachItem){
-          var formattedNumber = eachItem.number.replace(/(\d{3})(\d{3})(\d{4})/, '+1$1$2$3');
-          if (formattedNumber.length === 12){
-            client.messages.create({
-              body: 'There is an emergency!',
-              to: formattedNumber,
-              from: '+16143285664'
-            }).then((message) => console.log(message.sid));
-          };
-        });
-      }else{
-        twiml.message('no numbers to send 2');
-      }
+    PhoneNumber.find().forEach(function(pn) {
+      var formattedNumber = eachItem.number.replace(/(\d{3})(\d{3})(\d{4})/, '+1$1$2$3');
+      if (formattedNumber.length === 12){
+        twilioClient.messages.create({
+          body: 'There is an emergency!',
+          to: formattedNumber,
+          from: '+16143285664'
+        }).then((message) => console.log(message.sid));
+      };
     });
   } else {
-    twiml.message('No Body param match, Twilio sends this in the request to your server.');
+    twiml.message('No Body param match, Twilio sends this in the request to your server.').then((message) => console.log("sent a no go message"));
   }
 
   res.writeHead(200, {'Content-Type': 'text/xml'});
