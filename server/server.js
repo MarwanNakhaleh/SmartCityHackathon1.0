@@ -36,10 +36,11 @@ app.get('/map', function(req, res, next){
 app.post('/sms', (req, res) => {
   const twiml = new MessagingResponse();
 
-  if (req.body.Body.includes('emergency')) {
+  if (req.body.Body.toLowerCase().includes('emergency')) {
     PhoneNumber.find().then((pns) => {
       twiml.message(JSON.stringify(pns, undefined, 2));
     });
+    twiml.message()
   } else {
     twiml.message('No Body param match, Twilio sends this in the request to your server.');
   }
@@ -68,6 +69,7 @@ io.on('connection', (socket) => {
             PhoneNumber.find({ number: info.number }).then((pn) => {
               if(!pn){
                 var phoneNumber = new PhoneNumber({ number: info.number });
+                phoneNumber.save();
               }
             });
             io.emit('display', displayTweets(tweets, twilioClient, info.number, results.lat, results.long));
