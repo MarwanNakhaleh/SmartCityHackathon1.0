@@ -37,7 +37,7 @@ app.get('/test_all_numbers', function(req, res, next){
   PhoneNumber.find().then(function(phoneNumbers){
     phoneNumbers.forEach(function(pn) {
       console.log(`Phone Number: ${pn.number}`);
-      var formattedNumber = String(pn.number).replace(/(\d{3})(\d{3})(\d{4})/, '+1$1$2$3');
+      var formattedNumber = pn.number.replace(/(\d{3})(\d{3})(\d{4})/, '+1$1$2$3');
       console.log(`Formatted number: ${formattedNumber}`);
       if (formattedNumber.length === 12){
         twilioClient.messages.create({
@@ -57,7 +57,7 @@ app.post('/sms', (req, res) => {
     PhoneNumber.find().then(function(phoneNumbers){
       phoneNumbers.forEach(function(pn) {
         console.log(`Phone Number: ${pn.number}`);
-        var formattedNumber = String(pn.number).replace(/(\d{3})(\d{3})(\d{4})/, '+1$1$2$3');
+        var formattedNumber = pn.number.replace(/(\d{3})(\d{3})(\d{4})/, '+1$1$2$3');
         console.log(`Formatted number: ${formattedNumber}`);
         if (formattedNumber.length === 12){
           twilioClient.messages.create({

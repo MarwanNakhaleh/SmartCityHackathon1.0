@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var numras = new mongoose.Schema({
   number: {
-    type: Number,
+    type: String,
     required: [true, 'You need a phone number to subscribe.'],
     minlength: 10,
     maxlength: 10,
