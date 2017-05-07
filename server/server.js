@@ -75,7 +75,8 @@ io.on('connection', (socket) => {
                     console.log('Error on save!');
                   }else{
                     console.log('saved ok');
-                  });
+                  }
+                });
               }
             });
             io.emit('display', displayTweets(tweets, twilioClient, info.number, results.lat, results.long));
