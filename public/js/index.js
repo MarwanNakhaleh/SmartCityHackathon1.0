@@ -32,12 +32,11 @@ socket.on('display', function(obj) {
 
 jQuery('#get-queries').on('submit', function(e) {
   e.preventDefault();
-  jQuery('#status').text('Fetching tweets...');
   socket.emit('getTweets', {
     query: jQuery('[name=query]').val(),
     location: jQuery('[name=location]').val(),
     number: jQuery('[name=number]').val()
   }, function() {
-    jQuery('#status').text('Tweets fetched.');
+    // do stuff
   });
 });

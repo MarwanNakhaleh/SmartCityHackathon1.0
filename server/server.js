@@ -33,6 +33,10 @@ app.get('/map', function(req, res, next){
   res.sendFile('map.html', { root: publicPath });
 });
 
+app.get('/contact', function(req, res, next){
+  res.sendFile('contact.html', { root: publicPath });
+});
+
 app.get('/test_all_numbers', function(req, res, next){
   PhoneNumber.find().then(function(phoneNumbers){
     phoneNumbers.forEach(function(pn) {
