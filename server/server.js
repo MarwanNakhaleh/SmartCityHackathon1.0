@@ -40,7 +40,16 @@ app.post('/sms', (req, res) => {
     PhoneNumber.find().then((pns) => {
       if(pns.length > 0){
         console.log(pns);
-        twiml.message(JSON.stringify(pns, undefined, 2));
+        pns.forEach(function(eachItem){
+          var formattedNumber = eachItem.number.replace(/(\d{3})(\d{3})(\d{4})/, '+1$1$2$3');
+          if (formattedNumber.length === 12){
+            client.messages.create({
+              body: 'There is an emergency!',
+              to: formattedNumber,
+              from: '+16143285664'
+            }).then((message) => console.log(message.sid));
+          };
+        });
       }else{
         twiml.message('no numbers to send 2');
       }
