@@ -109,7 +109,7 @@ io.on('connection', (socket) => {
           });
           client.get(`search/tweets.json?q=${encodeURIComponent(info.query)}&geocode=${results.lat},${results.long},5km&lang=en&result_type=recent`, function(error, tweets, response){
             if(error){
-              throw error;
+              console.log(error);
             }
             io.emit('display', displayTweets(tweets, twilioClient, info.number, results.lat, results.long));
           });
