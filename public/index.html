@@ -3,16 +3,31 @@
 
 <head>
   <meta charset="utf-8" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"
+  integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ=="
+  crossorigin=""/>
+  <link rel="stylesheet" href="./css/map.css" />
 </head>
 
 <body>
-  <form id="get-queries">
-    <input name="query" type="text" placeholder="Type a search query here..." autofocus autocomplete="off" />
-    <input name="location" type="text" placeholder="Type a location here..." autofocus autocomplete="off" />
-    <button>Send</button>
-  </form>
+  <div class="container">
+    <div class="row">
+      <form id="get-queries" class="form-group col-md-12">
+        <div id="status"></div>
+        <input class="form-control" name="query" type="text" placeholder="Type a search query here..." autofocus autocomplete="off" />
+        <input class="form-control" name="location" type="text" placeholder="Type a location here..." autofocus autocomplete="off" />
+        <input class="form-control" name="number" type="text" placeholder="Enter your phone number for updates..." autofocus autocomplete="off" />
+        <button id="query-submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
 
-  <div id="tweets">
+    <div class="row">
+      <div id="tweets" class="col-md-6">
+      </div>
+      <div id="map" class="col-md-6">
+      </div>
+    </div>
   </div>
 
   <script id="tweet-template" type="text/template">
@@ -25,6 +40,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js "></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js "></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js "></script>
+  <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"
+  integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg=="
+  crossorigin=""></script>
   <script src="./js/index.js "></script>
 </body>
 

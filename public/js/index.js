@@ -1,12 +1,12 @@
 var socket = io();
 
-socket.on('display', function(tweets) {
+socket.on('display', function(obj) {
   jQuery('#tweets').empty();
-  for(var i = 0; i < tweets.length; i++){
+  for(var i = 0; i < obj.tweets.length; i++){
     var template = jQuery('#tweet-template').html();
     var html = Mustache.render(template, {
-      created_at: tweets[i][0],
-      text: tweets[i][1]
+      created_at: obj.tweets[i][0],
+      text: obj.tweets[i][1]
     });
     jQuery('#tweets').append(html);
   }
@@ -14,10 +14,12 @@ socket.on('display', function(tweets) {
 
 jQuery('#get-queries').on('submit', function(e) {
   e.preventDefault();
+  jQuery('#status').text('Fetching tweets...');
   socket.emit('getTweets', {
     query: jQuery('[name=query]').val(),
-    location: jQuery('[name=location]').val()
+    location: jQuery('[name=location]').val(),
+    number: jQuery('[name=number]').val()
   }, function() {
-    // do something
+    jQuery('#status').text('Tweets fetched.');
   });
 });

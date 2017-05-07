@@ -3,6 +3,7 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
+const twilio = require('twilio');
 
 const publicPath = path.join(__dirname, '../public');
 var {displayTweets, getLocation} = require('./utils/display');
@@ -10,15 +11,9 @@ var {displayTweets, getLocation} = require('./utils/display');
 var app = express();
 var server = http.createServer(app);
 var io = socketIO(server);
+var twilioClient = new twilio(process.env.SCH_TWILIO_ACCOUNT_SID, process.env.SCH_TWILIO_AUTH_TOKEN);
 
 app.use(express.static(publicPath));
-
-var client = new Twitter({
-  consumer_key: process.env.SCH_CONSUMER_KEY,
-  consumer_secret: process.env.SCH_CONSUMER_SECRET,
-  access_token_key: process.env.SCH_ACCESS_TOKEN,
-  access_token_secret: process.env.SCH_ACCESS_SECRET
-});
 
 io.on('connection', (socket) => {
   socket.on('getTweets', (info, callback) => {
@@ -27,13 +22,19 @@ io.on('connection', (socket) => {
         console.log(errorMessage);
       }else{
         setInterval(function(){
-          client.get(`search/tweets.json?q=${encodeURIComponent(info.query)}&geocode=${results.lat},${results.long},1km&lang=en&result_type=recent`, function(error, tweets, response){
+          var client = new Twitter({
+            consumer_key: process.env.SCH_CONSUMER_KEY,
+            consumer_secret: process.env.SCH_CONSUMER_SECRET,
+            access_token_key: process.env.SCH_ACCESS_TOKEN,
+            access_token_secret: process.env.SCH_ACCESS_SECRET
+          });
+          client.get(`search/tweets.json?q=${encodeURIComponent(info.query)}&geocode=${results.lat},${results.long},5km&lang=en&result_type=recent`, function(error, tweets, response){
             if(error){
               throw error;
             }
-            io.emit('display', displayTweets(tweets));
+            io.emit('display', displayTweets(tweets, twilioClient, info.number, results.lat, results.long));
           });
-        }, 10000);
+        }, 20000);
       }
     });
   });
