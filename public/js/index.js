@@ -3,20 +3,6 @@ var socket = io();
 socket.on('display', function(obj) {
   jQuery('#tweets').empty();
 
-  var node  = document.getElementById("map");
-  node.parentNode.removeChild(node);
-
-  var div = document.createElement("div");
-  div.setAttribute("id", "map");
-  div.setAttribute("class", "col-md-6");
-  jQuery('#map-row').append(div);
-
-  var mymap = L.map('map').setView([obj.lat, obj.long], 11);
-
-  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(mymap);
-
   for(var i = 0; i < obj.tweets.length; i++){
     var template = jQuery('#tweet-template').html();
     var html = Mustache.render(template, {

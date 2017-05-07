@@ -6,7 +6,8 @@ var displayTweets = function(tweets, client, number, lat, long){
     var eachTweet = [];
     eachTweet.push(tweets.statuses[i].created_at);
     eachTweet.push(tweets.statuses[i].text);
-    if(tweets.statuses[i].text.includes('emergency')){
+    if(tweets.statuses[i].text.includes('emergency') || tweets.statuses[i].text.includes('fire') || tweets.statuses[i].text.includes('rescue') || tweets.statuses[i].text.includes('victim') || tweets.statuses[i].text.includes('burning') ||
+    tweets.statuses[i].text.includes('flames')){
       var formattedNumber = number.replace(/(\d{3})(\d{3})(\d{4})/, '+1$1$2$3');
       if (formattedNumber.length === 12){
         client.messages.create({
