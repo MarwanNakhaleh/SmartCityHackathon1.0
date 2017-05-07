@@ -2,6 +2,21 @@ var socket = io();
 
 socket.on('display', function(obj) {
   jQuery('#tweets').empty();
+
+  var node  = document.getElementById("map");
+  node.parentNode.removeChild(node);
+
+  var div = document.createElement("div");
+  div.setAttribute("id", "map");
+  div.setAttribute("class", "col-md-6");
+  jQuery('#map-row').append(div);
+
+  var mymap = L.map('map').setView([obj.lat, obj.long], 11);
+
+  L.tileLayer(`http://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=f98bf15ffcbb84a011e8156372d4d13c`, {
+      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(mymap);
+
   for(var i = 0; i < obj.tweets.length; i++){
     var template = jQuery('#tweet-template').html();
     var html = Mustache.render(template, {
@@ -9,6 +24,9 @@ socket.on('display', function(obj) {
       text: obj.tweets[i][1]
     });
     jQuery('#tweets').append(html);
+    if(obj.tweets[i].length === 4){
+      L.marker([obj.tweets[i][2], obj.tweets[i][3]]).addTo(mymap).bindPopup(obj.tweets[i][1]);
+    }
   }
 });
 

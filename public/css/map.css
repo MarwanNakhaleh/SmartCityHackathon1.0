@@ -1,3 +1,8 @@
 #map{
-  height: 80%;
+  height: 400px;
+}
+
+#lone-map{
+  height: 375px;
+  width: 500px;
 }

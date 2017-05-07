@@ -15,6 +15,10 @@ var twilioClient = new twilio(process.env.SCH_TWILIO_ACCOUNT_SID, process.env.SC
 
 app.use(express.static(publicPath));
 
+app.get('/map', function(req, res, next){
+  res.sendFile('map.html', { root: publicPath });
+});
+
 io.on('connection', (socket) => {
   socket.on('getTweets', (info, callback) => {
     locationObj = getLocation(info.location, function(errorMessage, results) {

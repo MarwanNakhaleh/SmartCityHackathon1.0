@@ -3,12 +3,8 @@ var request = require('request');
 var displayTweets = function(tweets, client, number, lat, long){
   var tweetsArr = [];
   for(var i = 0; i < tweets.statuses.length; i++){
+    console.log(tweets.statuses[i]);
     var eachTweet = [];
-    if(tweets.statuses[i].geo){
-      console.log('geo', tweets.statuses[i].geo);
-    }else if (tweets.statuses[i].coordinates){
-      console.log('coords', tweets.statuses[i].coordinates);
-    }
     eachTweet.push(tweets.statuses[i].created_at);
     eachTweet.push(tweets.statuses[i].text);
     if(tweets.statuses[i].text.includes("emergency")){
@@ -20,6 +16,16 @@ var displayTweets = function(tweets, client, number, lat, long){
           from: '+16143285664'
         }).then((message) => console.log(message.sid));
       }
+    }
+    if(tweets.statuses[i].geo){
+      console.log('geo');
+      console.log(tweets.statuses[i].geo.coordinates[0]);
+      console.log(tweets.statuses[i].geo.coordinates[1]);
+      eachTweet.push(tweets.statuses[i].geo.coordinates[0]);
+      eachTweet.push(tweets.statuses[i].geo.coordinates[1]);
+    }else if (tweets.statuses[i].coordinates){
+      console.log('coords');
+      console.log(tweets.statuses[i].coordinates);
     }
     tweetsArr.push(eachTweet);
   }
