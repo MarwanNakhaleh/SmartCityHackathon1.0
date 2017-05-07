@@ -38,11 +38,7 @@ app.post('/sms', (req, res) => {
 
   if (req.body.Body.includes('emergency')) {
     PhoneNumber.find().then((pns) => {
-      client.messages.create({
-        body: JSON.stringify(pns, undefined, 2),
-        to: formattedNumber,
-        from: '+16143285664'
-      }).then((message) => console.log(message.sid));
+      twiml.message(JSON.stringify(pns, undefined, 2));
     });
   } else {
     twiml.message('No Body param match, Twilio sends this in the request to your server.');
