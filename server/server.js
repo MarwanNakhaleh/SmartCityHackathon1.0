@@ -38,11 +38,10 @@ app.post('/sms', (req, res) => {
 
   if (req.body.Body.toLowerCase().includes('emergency')) {
     PhoneNumber.find().then((pns) => {
-      if(pns){
+      if(pns.length > 0){
         console.log(pns);
         twiml.message(JSON.stringify(pns, undefined, 2));
       }else{
-        console.log(pns);
         twiml.message('no numbers to send 2');
       }
     });
@@ -71,18 +70,16 @@ io.on('connection', (socket) => {
             if(error){
               throw error;
             }
-            PhoneNumber.find({ number: info.number }).then((pn) => {
-              if(!pn){
-                var phoneNumber = new PhoneNumber({ number: info.number });
-                phoneNumber.save(function(err) {
-                  if (err){
-                    console.log('Error on save!');
-                  }else{
-                    console.log('saved ok');
-                  }
-                });
-              }
-            });
+            if(PhoneNumber.find({ number: info.number }).count() == 0){
+              var phoneNumber = new PhoneNumber({ number: info.number });
+              phoneNumber.save(function(err) {
+                if (err){
+                  console.log('Error on save!');
+                }else{
+                  console.log('saved ok');
+                }
+              });
+            }
             io.emit('display', displayTweets(tweets, twilioClient, info.number, results.lat, results.long));
           });
         }, 20000);
